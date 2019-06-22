@@ -1,0 +1,20 @@
+apiVersion:    extensions/v1beta1
+kind:          Deployment
+metadata:
+  name:        fancyapp
+spec:
+  replicas:    3
+  template:
+    metadata:
+      labels:
+        app:   fancy
+        env:   development
+    spec:
+      containers:
+      - name:  sise
+        image: redis
+        ports:
+        - containerPort: 6379
+        env:
+        - name: SIMPLE_SERVICE_VERSION
+          value: "4.0"

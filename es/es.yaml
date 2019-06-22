@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+      name: elasticsearch
+      labels:
+        name: elasticsearch-logging
+        kubernetes.io/cluster-service: "true"
+spec:
+      replicas: 1
+      selector:
+        name: elasticsearch-logging
+      template:
+        metadata:
+          name: es
+          labels:
+            name: elasticsearch-logging
+            kubernetes.io/cluster-service: "true"
+        spec:
+          containers:
+            - image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+              imagePullPolicy: Never
+              name: elasticsearch-logging
+              ports:
+                - name: es-port
+                  containerPort: 9200
+                - name: es-tran-port
+                  containerPort: 9300
+              volumeMounts:
+                - name: es-persistent-storage
+                  mountPath: /data
+          volumes:
+            - name: es-persistent-storage
+              emptyDir: {}
